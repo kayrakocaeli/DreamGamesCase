@@ -10,15 +10,18 @@ public class SettingsMenuController : MonoBehaviour
     [SerializeField] private Button sfxButton;      
     [SerializeField] private Button musicButton;    
     [SerializeField] private Button restartButton;
-    
+    [SerializeField] private Button backToMainMenu;
+
     [SerializeField] private AudioSource sfxSource; 
     [SerializeField] private AudioSource musicSource;
     
     [SerializeField] private Sprite sfxOnSprite;    
     [SerializeField] private Sprite sfxOffSprite;   
     [SerializeField] private Sprite musicOnSprite;  
-    [SerializeField] private Sprite musicOffSprite; 
-    
+    [SerializeField] private Sprite musicOffSprite;
+
+    [SerializeField] private GameObject SettingsOnPanel;
+
     [SerializeField] private float delayBetweenButtons = 0.2f; 
     [SerializeField] private float moveDuration = 0.5f;
     [SerializeField] private float rotationDuration = 0.5f;
@@ -30,13 +33,15 @@ public class SettingsMenuController : MonoBehaviour
         sfxButton.onClick.AddListener(ToggleSFX);
         musicButton.onClick.AddListener(ToggleMusic);
         restartButton.onClick.AddListener(RestartLevel);
+        backToMainMenu.onClick.AddListener(BackToMainMenu);
     }
 
     public void ToggleSettingsMenu()
     {
         AudioManager.Instance.PlayEffect(SoundID.Cube);
         isMenuOpen = !isMenuOpen;
-        
+        SettingsOnPanel.SetActive(isMenuOpen);
+
         settingsButton.transform.DORotate(isMenuOpen ? new Vector3(0, 0, 180) : new Vector3(0, 0, 0), rotationDuration);
 
         for (int i = 0; i < buttons.Length; i++)
@@ -88,5 +93,10 @@ public class SettingsMenuController : MonoBehaviour
     {
         AudioManager.Instance.PlayEffect(SoundID.Cube);
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+
+    public void BackToMainMenu()
+    {
+        SceneManager.LoadScene(0);
     }
 }
